@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: dvwa_web
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./assets:/var/www/html/assets
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=dvwa
+      - DB_PASSWORD=dvwa123
+      - DB_NAME=dvwa
+    networks:
+      - dvwa_network
+    restart: always
+
+  db:
+    image: mariadb:11
+    container_name: dvwa_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: dvwa
+      MYSQL_USER: dvwa
+      MYSQL_PASSWORD: dvwa123
+      MYSQL_INITDB_SKIP_TZINFO: "yes"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - dvwa_data:/var/lib/mysql
+    networks:
+      - dvwa_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+networks:
+  dvwa_network:
+    driver: bridge
+
+volumes:
+  dvwa_data:

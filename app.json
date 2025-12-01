@@ -1,0 +1,22 @@
+{
+  "name": "dvwalast",
+  "description": "Damn Vulnerable Web Application - Training Lab",
+  "keywords": [
+    "security",
+    "penetration-testing",
+    "vulnerability",
+    "training",
+    "sql-injection",
+    "xss",
+    "csrf"
+  ],
+  "repositories": {
+    "heroku": "https://github.com/yourusername/dvwalast"
+  },
+  "stack": "heroku-22",
+  "addons": [
+    {
+      "plan": "cleardb:ignite"
+    }
+  ]
+}

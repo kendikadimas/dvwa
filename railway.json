@@ -1,0 +1,22 @@
+{
+  "name": "DVWA Lab",
+  "description": "Damn Vulnerable Web Application - Training Lab",
+  "keywords": ["security", "penetration-testing", "vulnerability", "training"],
+  "repository": "https://github.com/yourusername/dvwalast",
+  "env": {
+    "DB_HOST": "mysql",
+    "DB_USER": "dvwa",
+    "DB_PASSWORD": "dvwa123",
+    "DB_NAME": "dvwa"
+  },
+  "addons": [
+    {
+      "plan": "mysql"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/php"
+    }
+  ]
+}
