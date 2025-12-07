@@ -13,7 +13,7 @@ $name = $_GET['name'] ?? '';
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - XSS Reflected</title>
+    <title>Sistem Arsip Surat - Feedback Sistem</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,34 +92,29 @@ $name = $_GET['name'] ?? '';
 </head>
 <body>
     <div class="container">
-        <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
-        
-        <h1>XSS - Reflected Lab</h1>
-        
+        <a href="dashboard.php" class="back-link">← Kembali ke Dasbor</a>
+        <h1>Feedback Sistem</h1>
         <div class="info-box">
-            <h2>Reflected Cross-Site Scripting</h2>
-            <p>The application reflects user input from URL parameters without escaping. This allows injecting malicious JavaScript.</p>
+            <h2>Kirim Feedback</h2>
+            <p>Kirim masukan atau feedback ke admin sistem arsip. Input feedback akan langsung ditampilkan tanpa filter (Reflected XSS).</p>
         </div>
-        
         <form method="GET">
             <div class="form-group">
-                <label for="name">Enter Your Name</label>
-                <input type="text" id="name" name="name" placeholder="Your name..." value="<?php echo htmlspecialchars($name); ?>">
+                <label for="name">Isi Feedback Anda</label>
+                <input type="text" id="name" name="name" placeholder="Tulis feedback..." value="<?php echo htmlspecialchars($name); ?>">
             </div>
-            <button type="submit">Greet</button>
+            <button type="submit">Kirim Feedback</button>
         </form>
-        
         <div class="hint">
-            <strong>Exploitation Hints:</strong><br>
-            • Try: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code><br>
-            • Try: <code>&lt;img src=x onerror="alert('XSS')"&gt;</code><br>
-            • Try: <code>&lt;svg onload="alert('XSS')"&gt;</code><br>
-            • Share malicious link: <code>http://localhost:8000/xss_reflected.php?name=&lt;script&gt;alert('XSS')&lt;/script&gt;</code>
+            <strong>Petunjuk Eksploitasi:</strong><br>
+            • Coba: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code><br>
+            • Coba: <code>&lt;img src=x onerror="alert('XSS')"&gt;</code><br>
+            • Coba: <code>&lt;svg onload="alert('XSS')"&gt;</code><br>
+            • Bagikan link berbahaya: <code>http://localhost:8000/xss_reflected.php?name=&lt;script&gt;alert('XSS')&lt;/script&gt;</code>
         </div>
-        
         <?php if ($name): ?>
             <div class="greeting">
-                <p>Hello, <?php echo $name; ?>!</p>
+                <p>Feedback Anda: <?php echo $name; ?></p>
             </div>
         <?php endif; ?>
     </div>

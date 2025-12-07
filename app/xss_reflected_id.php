@@ -13,7 +13,7 @@ $name = $_GET['name'] ?? '';
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - XSS Tercermin</title>
+    <title>Sistem Arsip Surat - Feedback Sistem</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,22 +93,18 @@ $name = $_GET['name'] ?? '';
 <body>
     <div class="container">
         <a href="dashboard_id.php" class="back-link">← Kembali ke Dasbor</a>
-        
-        <h1>Lab XSS - Tercermin</h1>
-        
+        <h1>Feedback Sistem</h1>
         <div class="info-box">
-            <h2>Cross-Site Scripting Tercermin</h2>
-            <p>Aplikasi mencerminkan input pengguna dari parameter URL tanpa escape. Ini memungkinkan injeksi JavaScript berbahaya.</p>
+            <h2>Kirim Feedback</h2>
+            <p>Kirim masukan atau feedback ke admin sistem arsip. Input feedback akan langsung ditampilkan tanpa filter (Reflected XSS).</p>
         </div>
-        
         <form method="GET">
             <div class="form-group">
-                <label for="name">Masukkan Nama Anda</label>
-                <input type="text" id="name" name="name" placeholder="Nama Anda..." value="<?php echo htmlspecialchars($name); ?>">
+                <label for="name">Isi Feedback Anda</label>
+                <input type="text" id="name" name="name" placeholder="Tulis feedback..." value="<?php echo htmlspecialchars($name); ?>">
             </div>
-            <button type="submit">Sapa</button>
+            <button type="submit">Kirim Feedback</button>
         </form>
-        
         <div class="hint">
             <strong>Petunjuk Eksploitasi:</strong><br>
             • Coba: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code><br>
@@ -116,10 +112,9 @@ $name = $_GET['name'] ?? '';
             • Coba: <code>&lt;svg onload="alert('XSS')"&gt;</code><br>
             • Bagikan link berbahaya: <code>http://localhost:8000/xss_reflected.php?name=&lt;script&gt;alert('XSS')&lt;/script&gt;</code>
         </div>
-        
         <?php if ($name): ?>
             <div class="greeting">
-                <p>Halo, <?php echo $name; ?>!</p>
+                <p>Feedback Anda: <?php echo $name; ?></p>
             </div>
         <?php endif; ?>
     </div>

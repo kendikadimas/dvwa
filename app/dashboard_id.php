@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - Dasbor</title>
+    <title>Sistem Arsip Surat - Dasbor</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,37 +91,32 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="container">
         <div class="header">
-            <h1>DVWA - Dasbor</h1>
+            <h1>Sistem Arsip Surat</h1>
             <a href="logout.php" class="logout-btn">Keluar</a>
         </div>
-        
         <div class="welcome">
-            <p>Selamat datang, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>! Ini adalah lab pelatihan untuk kerentanan web.</p>
+            <p>Selamat datang, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>! Kelola arsip surat masuk/keluar dan fitur lain di bawah ini.</p>
         </div>
-        
         <div class="labs">
             <div class="lab-card">
-                <h2>SQL Injection</h2>
-                <p>Pelajari serangan SQL injection pada formulir login dan pencarian. Termasuk SQLi berbasis error dan blind.</p>
-                <a href="sqli_id.php">Buka Lab</a>
+                <h2>Pencarian Surat</h2>
+                <p>Cari surat masuk/keluar berdasarkan nomor surat. Fitur ini rentan terhadap SQL Injection.</p>
+                <a href="sqli_id.php">Cari Surat</a>
             </div>
-            
             <div class="lab-card">
-                <h2>XSS - Tercermin</h2>
-                <p>Eksploitasi kerentanan cross-site scripting yang direfleksikan melalui parameter URL.</p>
-                <a href="xss_reflected_id.php">Buka Lab</a>
+                <h2>Komentar Surat</h2>
+                <p>Tambahkan komentar pada surat. Komentar akan tampil ke semua user. Fitur ini rentan terhadap Stored XSS.</p>
+                <a href="xss_stored_id.php">Komentar Surat</a>
             </div>
-            
             <div class="lab-card">
-                <h2>XSS - Tersimpan</h2>
-                <p>Latih serangan XSS yang tersimpan di mana skrip berbahaya disimpan di database.</p>
-                <a href="xss_stored_id.php">Buka Lab</a>
+                <h2>Feedback Sistem</h2>
+                <p>Kirim masukan/feedback ke admin. Fitur ini rentan terhadap Reflected XSS.</p>
+                <a href="xss_reflected_id.php">Kirim Feedback</a>
             </div>
-            
             <div class="lab-card">
-                <h2>CSRF</h2>
-                <p>Ubah kata sandi tanpa token CSRF. Permintaan yang mengubah keadaan tidak terlindungi.</p>
-                <a href="csrf_id.php">Buka Lab</a>
+                <h2>Ganti Password</h2>
+                <p>Ubah password akun Anda. Fitur ini rentan terhadap serangan CSRF.</p>
+                <a href="csrf_id.php">Ganti Password</a>
             </div>
         </div>
     </div>

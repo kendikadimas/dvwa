@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DVWA - SQL Injection</title>
+    <title>Sistem Arsip Surat - Pencarian Surat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -133,28 +133,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <a href="dashboard_id.php" class="back-link">← Kembali ke Dasbor</a>
-        
-        <h1>Lab SQL Injection</h1>
-        
+        <h1>Pencarian Surat</h1>
         <div class="info-box">
-            <h2>Cari Berdasarkan ID</h2>
-            <p>Cari komentar berdasarkan nomor ID. Pencarian ini rentan terhadap SQL injection.</p>
+            <h2>Cari Surat Berdasarkan Nomor</h2>
+            <p>Cari surat masuk/keluar berdasarkan nomor surat. Fitur ini rentan terhadap SQL Injection.</p>
         </div>
-        
         <form method="POST">
             <div class="form-group">
-                <label for="search">Cari ID</label>
-                <input type="text" id="search" name="search" placeholder="Masukkan ID atau SQL injection...">
+                <label for="search">Nomor Surat</label>
+                <input type="text" id="search" name="search" placeholder="Masukkan nomor surat atau payload SQL injection...">
             </div>
             <button type="submit">Cari</button>
         </form>
-        
         <div class="hint">
             <strong>Petunjuk Eksploitasi:</strong><br>
-            • Coba: <code>1' OR '1'='1</code> - untuk menampilkan semua record<br>
-            • Coba: <code>1' UNION SELECT 1,2,3,4</code> - untuk menguji kolom UNION<br>
-            • Coba: <code>1' UNION SELECT username, password, 3, created_at FROM users</code> - untuk mengekstrak kredensial pengguna<br>
-            • Coba: <code>1 AND SLEEP(5)</code> - SQLi blind berbasis waktu (respons akan tertunda 5 detik)
+            • Coba: <code>1' OR '1'='1</code> - tampilkan semua surat<br>
+            • Coba: <code>1' UNION SELECT 1,2,3,4</code> - uji kolom UNION<br>
+            • Coba: <code>1' UNION SELECT username, password, 3, created_at FROM users</code> - ekstrak data user<br>
+            • Coba: <code>1 AND SLEEP(5)</code> - SQLi blind berbasis waktu
         </div>
         
         <?php if ($error): ?>
@@ -163,14 +159,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <?php if ($result && $result->num_rows > 0): ?>
             <div class="results">
-                <h3>Hasil Pencarian</h3>
+                <h3>Hasil Pencarian Surat</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nama Pengguna</th>
+                            <th>Nomor Surat</th>
+                            <th>Pengirim</th>
                             <th>Email</th>
-                            <th>Dibuat Pada</th>
+                            <th>Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -186,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </table>
             </div>
         <?php elseif (!$error && $search_query): ?>
-            <div class="error">Tidak ada hasil untuk: <?php echo htmlspecialchars($search_query); ?></div>
+            <div class="error">Tidak ada surat dengan nomor: <?php echo htmlspecialchars($search_query); ?></div>
         <?php endif; ?>
     </div>
 </body>
