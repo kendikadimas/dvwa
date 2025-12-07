@@ -16,31 +16,43 @@ Aplikasi web yang sengaja vulnerable untuk pelatihan penetration testing. Dibuat
 - **[csrf_iframe_attack.html](csrf_iframe_attack.html)** - Silent CSRF attack via iframe
 - **[NETWORK_SETUP.md](NETWORK_SETUP.md)** - Setup networking untuk akses dari Kali VM
 
-## ⚡ Quick Start (Local)
+## ⚡ Quick Start (Clone dari GitHub)
 
 ### Prerequisites
 - Docker & Docker Compose installed
 - Port 8000 available
+- Git (untuk clone)
 
-### Run Locally
-```bash
-# Clone repository
-git clone https://github.com/yourusername/dvwalast
-cd dvwalast
+### Setup (5 Menit)
 
-# Start containers
-docker-compose up -d
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/kendikadimas/dvwa.git
+   cd dvwa
+   ```
 
-# Access application
-# Indonesian: http://localhost:8000/login_id.php
-# English: http://localhost:8000/login.php
+2. **Start Docker Container**
+   ```bash
+   docker compose up -d
+   ```
 
-# Credentials
-Username: admin
-Password: admin123
-```
+3. **Setup Database (First Time Only)**
+   - Buka browser: http://localhost:8000
+   - Klik tombol **"📦 Setup Database"** di login page
+   - Database akan dibuat otomatis
+   - Login dengan kredensial default
 
-**Tunggu 15 detik untuk database initialization.**
+4. **Login**
+   ```
+   Username: admin
+   Password: admin123
+   ```
+
+### Akses Aplikasi
+- **Indonesian:** http://localhost:8000/login_id.php
+- **English:** http://localhost:8000/login.php
+
+**🎉 No manual database setup needed!** Cukup klik tombol di login page.
 
 ### Stop
 ```bash

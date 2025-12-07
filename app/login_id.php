@@ -2,9 +2,32 @@
 require_once 'config.php';
 
 $error = '';
+$success_msg = '';
 $login_attempt = false;
+$db_needs_setup = false;
+$db_exists = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Cek pesan reset
+if (isset($_GET['reset_msg'])) {
+    $success_msg = $_GET['reset_msg'];
+}
+
+// Cek apakah database/tabel sudah ada
+if (!$mysqli) {
+    $db_needs_setup = true;
+    $error = "Database tidak ditemukan. Silakan setup database terlebih dahulu.";
+} else {
+    // Cek apakah tabel users sudah ada
+    $table_check = @$mysqli->query("SHOW TABLES LIKE 'users'");
+    if (!$table_check || $table_check->num_rows === 0) {
+        $db_needs_setup = true;
+        $error = "Tabel database tidak ditemukan. Silakan setup database terlebih dahulu.";
+    } else {
+        $db_exists = true;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$db_needs_setup) {
     $login_attempt = true;
     
     // VULNERABLE: SQL Injection in login form - NO ESCAPING
@@ -107,29 +130,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container">
         <h1>DVWA</h1>
         
+        <?php if ($success_msg): ?>
+            <div style="background-color: #2d5016; border: 1px solid #4CAF50; color: #a5d6a7; padding: 10px; border-radius: 3px; margin-bottom: 15px;">
+                <?php echo htmlspecialchars($success_msg); ?>
+            </div>
+        <?php endif; ?>
+        
         <?php if ($error): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         
-        <form method="POST">
-            <div class="form-group">
-                <label for="username">Nama Pengguna</label>
-                <input type="text" id="username" name="username" required>
+        <?php if ($db_needs_setup): ?>
+            <div style="background-color: #2d5016; border: 1px solid #4CAF50; color: #a5d6a7; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <strong>🚀 Setup Awal Diperlukan</strong><br>
+                <p style="margin: 10px 0;">Sepertinya ini pertama kali Anda menjalankan DVWA. Klik tombol di bawah untuk membuat database dan tabel secara otomatis.</p>
+            </div>
+            <a href="setup_database_id.php" style="display: block; width: 100%; padding: 12px; background-color: #4CAF50; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 16px; margin-bottom: 15px;">
+                📦 Setup Database
+            </a>
+            <div style="text-align: center; color: #888; font-size: 14px; margin-top: 15px;">
+                <p>Atau jika database sudah ada:</p>
+                <button type="button" onclick="location.reload()" style="background-color: #666; padding: 8px 16px; font-size: 14px;">
+                    🔄 Coba Koneksi Lagi
+                </button>
+            </div>
+        <?php else: ?>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Nama Pengguna</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit">Masuk</button>
+            </form>
+            
+            <div class="info">
+                <p><strong>Kredensial Default:</strong></p>
+                <p>Nama Pengguna: admin</p>
+                <p>Kata Sandi: admin123</p>
             </div>
             
-            <div class="form-group">
-                <label for="password">Kata Sandi</label>
-                <input type="password" id="password" name="password" required>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #555;">
+                <div style="display: flex; gap: 10px;">
+                    <a href="setup_database_id.php" style="flex: 1; padding: 10px; background-color: #4CAF50; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                        📦 Buat/Reset DB
+                    </a>
+                    <a href="reset_db.php?from=login&lang=id" style="flex: 1; padding: 10px; background-color: #ff9800; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                        🔄 Reset Data
+                    </a>
+                </div>
+                <p style="color: #888; font-size: 11px; text-align: center; margin-top: 10px;">
+                    Buat: Reset database lengkap | Reset: Hapus comments saja
+                </p>
             </div>
-            
-            <button type="submit">Masuk</button>
-        </form>
-        
-        <div class="info">
-            <p><strong>Kredensial Default:</strong></p>
-            <p>Nama Pengguna: admin</p>
-            <p>Kata Sandi: admin123</p>
-        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

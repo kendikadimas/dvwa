@@ -2,9 +2,32 @@
 require_once 'config.php';
 
 $error = '';
+$success_msg = '';
 $login_attempt = false;
+$db_needs_setup = false;
+$db_exists = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Check for reset message
+if (isset($_GET['reset_msg'])) {
+    $success_msg = $_GET['reset_msg'];
+}
+
+// Check if database/tables exist
+if (!$mysqli) {
+    $db_needs_setup = true;
+    $error = "Database not found. Please setup the database first.";
+} else {
+    // Check if users table exists
+    $table_check = @$mysqli->query("SHOW TABLES LIKE 'users'");
+    if (!$table_check || $table_check->num_rows === 0) {
+        $db_needs_setup = true;
+        $error = "Database tables not found. Please setup the database first.";
+    } else {
+        $db_exists = true;
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$db_needs_setup) {
     $login_attempt = true;
     
     // VULNERABLE: SQL Injection in login form - NO ESCAPING
@@ -107,29 +130,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-container">
         <h1>DVWA</h1>
         
+        <?php if ($success_msg): ?>
+            <div style="background-color: #2d5016; border: 1px solid #4CAF50; color: #a5d6a7; padding: 10px; border-radius: 3px; margin-bottom: 15px;">
+                <?php echo htmlspecialchars($success_msg); ?>
+            </div>
+        <?php endif; ?>
+        
         <?php if ($error): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         
-        <form method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+        <?php if ($db_needs_setup): ?>
+            <div style="background-color: #2d5016; border: 1px solid #4CAF50; color: #a5d6a7; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <strong>🚀 First Time Setup Required</strong><br>
+                <p style="margin: 10px 0;">It looks like this is your first time running DVWA. Click the button below to automatically create the database and tables.</p>
+            </div>
+            <a href="setup_database.php" style="display: block; width: 100%; padding: 12px; background-color: #4CAF50; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 16px; margin-bottom: 15px;">
+                📦 Setup Database
+            </a>
+            <div style="text-align: center; color: #888; font-size: 14px; margin-top: 15px;">
+                <p>Or if database already exists:</p>
+                <button type="button" onclick="location.reload()" style="background-color: #666; padding: 8px 16px; font-size: 14px;">
+                    🔄 Retry Connection
+                </button>
+            </div>
+        <?php else: ?>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+            
+            <div class="info">
+                <p><strong>Default Credentials:</strong></p>
+                <p>Username: admin</p>
+                <p>Password: admin123</p>
             </div>
             
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #555;">
+                <div style="display: flex; gap: 10px;">
+                    <a href="setup_database.php" style="flex: 1; padding: 10px; background-color: #4CAF50; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                        📦 Create/Reset DB
+                    </a>
+                    <a href="reset_db.php?from=login&lang=en" style="flex: 1; padding: 10px; background-color: #ff9800; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                        🔄 Reset Data
+                    </a>
+                </div>
+                <p style="color: #888; font-size: 11px; text-align: center; margin-top: 10px;">
+                    Create: Full database reset | Reset: Clear comments only
+                </p>
             </div>
-            
-            <button type="submit">Login</button>
-        </form>
-        
-        <div class="info">
-            <p><strong>Default Credentials:</strong></p>
-            <p>Username: admin</p>
-            <p>Password: admin123</p>
-        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

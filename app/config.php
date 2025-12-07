@@ -13,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Database Connection
-$mysqli = new mysqli(
+$mysqli = @new mysqli(
     DB_HOST,
     DB_USER,
     DB_PASSWORD,
@@ -22,12 +22,13 @@ $mysqli = new mysqli(
 );
 
 // Connection error handling
+// Don't die immediately - let login.php handle the setup flow
 if ($mysqli->connect_error) {
-    die("Database Connection Error: " . $mysqli->connect_error);
+    $mysqli = null;
+} else {
+    // Set charset
+    $mysqli->set_charset("utf8mb4");
 }
-
-// Set charset
-$mysqli->set_charset("utf8mb4");
 
 // Security Headers
 header('X-Frame-Options: DENY');
