@@ -184,8 +184,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$db_needs_setup) {
                         🔄 Reset Data
                     </a>
                 </div>
+                <div style="margin-top: 10px;">
+                    <a href="reset_database.php?from=login" style="display: block; padding: 10px; background-color: #c00; color: #fff; text-align: center; text-decoration: none; border-radius: 3px; font-size: 14px;">
+                        🗑️ Reset Database (DROP ALL)
+                    </a>
+                </div>
                 <p style="color: #888; font-size: 11px; text-align: center; margin-top: 10px;">
-                    Create: Full database reset | Reset: Clear comments only
+                    Create: Setup database | Reset Data: Clear comments | Reset DB: Drop all tables
                 </p>
             </div>
         <?php endif; ?>

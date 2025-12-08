@@ -1,7 +1,10 @@
 <?php
 require_once 'config.php';
 
-if (!isset($_SESSION['user_id'])) {
+// Allow access from login page
+$from_login = isset($_GET['from']) && $_GET['from'] === 'login';
+
+if (!$from_login && !isset($_SESSION['user_id'])) {
     header('Location: login_id.php');
     exit;
 }
@@ -229,10 +232,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_reset'])) {
 <body>
     <div class="container">
         <div class="lang-switch">
-            <a href="reset_database.php">🇬🇧 English</a>
+            <a href="reset_database.php?from=login">🇬🇧 English</a>
         </div>
         
-        <a href="dashboard_id.php" class="back-link">← Kembali ke Dashboard</a>
+        <?php if ($from_login): ?>
+            <a href="login_id.php" class="back-link">← Kembali ke Login</a>
+        <?php else: ?>
+            <a href="dashboard_id.php" class="back-link">← Kembali ke Dashboard</a>
+        <?php endif; ?>
         
         <h1>🗑️ Reset Database</h1>
         
